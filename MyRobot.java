@@ -5,7 +5,9 @@ public class MyRobot extends Robot {
 	/**
 	 * 実行用関数
 	 */
-	private int lastDirect = 0; // A -> 1 C -> 2
+	private int beforeA = WHITE;
+	private int beforeC = WHITE;
+	private int continuityNumber = 0;
 
 	public void run() throws InterruptedException {
 		while (true) {
@@ -19,9 +21,16 @@ public class MyRobot extends Robot {
 
 			case BLACK:
 				// 黒を検知 => 右回転 => 前進
-				lastDirect = 1;
+				if (beforeA == BLACK) {
+					continuityNumber++;
+					rotateRight(10 + 3 * continuityNumber);
+				}
 				rotateRight(10);
 //        forward(1);
+				break;
+			case WHITE:
+				if (beforeA == BLACK)
+					continuityNumber = 0;
 				break;
 
 //      case WHITE:
@@ -36,29 +45,21 @@ public class MyRobot extends Robot {
 			switch (getColor(LIGHT_C)) {
 
 			case BLACK:
-				// 黒を検知 => 左回転 => 前進
-
-				lastDirect = 2;
+				if (beforeC == BLACK) {
+					continuityNumber++;
+					rotateLeft(10 + 3 * continuityNumber);
+				}
 				rotateLeft(10);
+				break;
+			case WHITE:
+				if (beforeC == BLACK)
+					continuityNumber = 0;
 				break;
 
 			}
 
-			if (getColor(LIGHT_A) == WHITE && getColor(LIGHT_B) == WHITE && getColor(LIGHT_C) == WHITE) {
-				switch (lastDirect) {
-
-				case 1:
-					rotateRight(30);
-					break;
-					
-				case 2:
-					rotateLeft(30);
-					break;
-
-				}
-				forward(10);
-			}
-
+			beforeA = getColor(LIGHT_A);
+			beforeC = getColor(LIGHT_C);
 			forward(1);
 
 			// 速度調整＆画面描画
@@ -67,7 +68,7 @@ public class MyRobot extends Robot {
 			// ゴールに到達すれば終了
 			if (isOnGoal())
 				return;
+
 		}
 	}
-
 }
