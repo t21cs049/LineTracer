@@ -26,18 +26,11 @@ public class MyRobot extends Robot {
 					rotateRight(10 + 3 * continuityNumber);
 				}
 				rotateRight(10);
-//        forward(1);
 				break;
 			case WHITE:
 				if (beforeA == BLACK)
 					continuityNumber = 0;
 				break;
-
-//      case WHITE:
-//        // 白を検知 => 左回転 => 前進
-//        rotateLeft(10);
-//        forward(1);
-//        break;
 
 			}
 
